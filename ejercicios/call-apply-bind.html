@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Function.prototype.call, Function.prototype.apply, Function.prototype.bind</title>
+</head>
+<body>
+    <a href="/ejercicios/">Go back</a>
+    <p><em>Abre la consola</em></p>
+
+    <ul>
+      <li><button class="call-to-action">Aprender</button></li>
+      <li><button class="call-to-action">Aprender Más</button></li>
+      <li><button class="call-to-action">¡Nunca parar de Aprender!</button></li>
+    </ul>
+
+    <script>
+        // Establece `this` usando `call`
+        function saludar() {
+            console.log(`Hola soy ${this.name} ${this.apellido}`);
+        }
+        //no esta el contexto de ningun obj o clase y sin embargo usamos this
+        //con la ayuda de call, se establece cual será el this
+        
+        const richard = {
+            name: "Richard",
+            apellido: "Kaufman Lopez",
+        }
+        //recibe como argumento el this a establecer
+        saludar.call(richard); //todas las funciones tienen call apply bind, son funciones que ya vienen empaquetadas
+        //Hola soy Richard Kaufman Lopez
+
+
+
+        // Establece `this` usando `call` y pasar argumentos a la función
+        //las funciones reciben argumentos
+        function caminar(metros, direccion) {
+            console.log(`${this.name} camina ${metros} metros hacia ${direccion}.`);
+        }
+        //establecer el contexto y pasar los argumentos de la funcion
+        caminar.call(richard, 400, "norte");
+        //Richard camina 400 metros hacia norte.
+
+
+
+        // Establece `this` usando `apply` y pasar argumentos a la función
+        caminar.apply(richard, [800, "noreste"]);
+        //hace lo mismo que call pero sus argumentos pasan de una forma ligeramente diferente ya que pasa todo dentro de un arreglo
+        const valores = [100, "guasmo"];
+        caminar.apply(richard, valores);
+        //es lo mismo pero podemos enfretar situaciones donde sera mas facil usar uno o el otro, por ejemplo para una lista de arreglos sera mas facil apply
+
+        /*Truco para no confundirlos
+            Call - la C de call significan comas, es decir argumentos separados con comas
+            Apply - la A de apply significa arreglos, pasar arreglo con argumentos
+        */
+
+
+
+        // Establecer `this` en una nueva función usando `bind`
+        //a diferencia de los otros bind no llama la funcion automaticamente sino que construye una nueva funcion
+        //esta tendra el this que le pasamos ya integrado y cuando se llame a la nueva funcion esta ejecuta
+        const daniel = { name: "Daniel", apellido: "Sanchez" }
+        saludar.bind(daniel); //asi en consola no pasa nada, no se ejecuta
+        const danielSaluda = saludar.bind(daniel);
+        danielSaluda(); //Hola soy Daniel Sanchez
+
+        //pasar argumentos con bind
+        const danielCamina = caminar.bind(daniel);
+        danielCamina(1000, "este"); //Daniel camina 1000 metros hacia este.
+
+        //asi permite hardcodear los argumentos, guardarlos, recordarlos
+        const danielCamina2 = caminar.bind(daniel, 82, "sur");
+        danielCamina2(); //Daniel camina 82 metros hacia sur.
+
+        //tambien permite hacerlo parcial los argumentos, y luego se llenan los dos
+        //permite hacer funciones reutilizables para contextos donde solo parcialmente esta establecido un valor
+        const danielCamina3 = caminar.bind(daniel, 150);
+        danielCamina3("oeste"); //Daniel camina 150 metros hacia oeste.
+
+        /*
+            hay varias formas de establecer valores: call apply bind, cada uno funciona ligeramente diferente
+            call y apply establece el this y llama la funcion inmediatamente
+            bind crea una nueva funcion donde this estara guardado
+            
+            Cada uno tiene formas diferentes de pasar argumentos en caso de que sea necesario
+            
+            Hay objetos que se parecen a otros, ej getElementsByClassName nos regresa un nodelist no es un array por lo tanto 
+            no tiene todos los metodos que tiene el array, no hay un foreach
+        */
+
+        // Cuándo es útil usar uno de estos métodos
+        const buttons = document.getElementsByClassName("call-to-action");
+        /* buttons.forEach(button => {
+            button.onclick = () => alert("Nunca pares de aprender!");
+        }); */
+        //sale error porque buttons no es un arraylist
+        //pero tienen una propiedad llamada length y esto es suficiente para usar alguna operacion de arreglos
+
+        //NodeList
+        Array.prototype.forEach.call(buttons, button => {
+            button.onclick = () => alert("Nunca pares de aprender!");
+        });
+        //Lo que se hice fue llamar a la funcion forEach usando button como contexto y esta tiene al length con eso le basta al array foreach para operar
+    </script>
+</body>
+</html>

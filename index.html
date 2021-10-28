@@ -22,5 +22,54 @@
         <button id="playButton">Play/Pause</button>
         <button id="muteButton">Mute/Unmute</button>
       </main>
+      
+      <!-- Al defirlo como type module ya no estaran disponibles variables y funciones en la consola -->
+      <script type="module" src="./assets/index.js"></script> <!-- podriamos ponerle async o defer pero la etiqueta esta al final asi que no es necesario -->
+
+      <!-- <script>
+        const video = document.querySelector("video"); //basta con que sea video porque en el html es la unica etiqueta que se llama asi
+        const button = document.querySelector("button"); //igual que la etiqueta video
+
+        //para que el codigo sea mas sensible hacemos una clase
+        //function MediaPlayer() {}
+        //El video esta hardcodeado osea embevido en la clase
+        //lo mejor es pasar un obj de configuracion
+        function MediaPlayer(config) {
+          this.media = config.el; //this guarda un valor en la instancia del objeto
+        }
+        
+        MediaPlayer.prototype.play = function() {
+          //video.play();
+          this.media.play();
+
+          //reto: pausar
+          /* if (this.media.paused) {
+            this.media.play();
+          } else {
+            this.media.pause();
+          } */
+        }
+        //solucion del instructor para el reto
+        MediaPlayer.prototype.pause = function() {
+          this.media.pause();
+        }
+        MediaPlayer.prototype.togglePlay = function() {
+          if (this.media.paused) {
+            this.play();
+          } else {
+            this.pause();
+          }
+        }
+        
+        //const player = new MediaPlayer();
+        const player = new MediaPlayer({ el: video }); //asi con el config
+
+        //asi sería el resultado de una interacción del usuario
+        //button.onclick = () => video.play(); //todos los elementos del DOM tienen un API, a veces diferentes o parecidos. Este tiene su play
+        //button.onclick = () => player.play(); //asi es con la clase
+        button.onclick = () => player.togglePlay(); //solucion del instructor para el reto
+
+        //video.play(); asi automaticamente se daría play pero sale una excepción ya que el navegador no lo permite, lo bloquea
+      </script> -->
 </body>
 </html>

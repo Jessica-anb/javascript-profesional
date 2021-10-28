@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>This</title>
+</head>
+<body>
+    <a href="/ejercicios/">Go back</a>
+    <p><em>Abre la consola</em></p>
+
+    <h1>
+      <code>this</code> se refiere a un objeto. Ese objeto es el que actualmente
+      está ejecutando un pedazo de código.
+
+      Si this esta en dentro de un objeto, el obj sería del pedazo de código
+    </h1>
+
+    <script>
+        //en POO this se refiere a la instancia de la clase cuando se crea un objeto
+
+        //this en el scope global
+        console.log(`this: ` + this); //this: [object Window]
+
+        //this en el scope de una funcion
+        function whoIsThis() {
+            return this;
+        }
+        //se esta llamando sola, no hay un objeto, por defecto el navegador lo define como window
+        console.log(`whoIsThis(): ${whoIsThis()}`); //whoIsThis(): [object Window]
+
+        //this en el scope de una funcion en strict mode
+        //ayuda a evitar errores, el motor ayuda a detectar errores, se usa en desarrollo
+        function whoIsThisStrict() {
+            "use strict"; //el modo estricto solo es en esta funcion
+            return this;
+        }
+        console.log(`whoIsThisStrict(): ${whoIsThisStrict()}`); //whoIsThisStrict(): undefined
+
+        //this en el contexto de un objeto
+        const person = {
+            name: "Jessica",
+            saludar: function() {
+                //aqui se refiere al objeto que actualmente esta ejecutando el pedazo de codigo que es la funcion
+                console.log(`Hola soy ${this.name}`); 
+            }
+        }
+        person.saludar(); //Hola soy Jessica
+
+        //this cuando sacamos a una funcion de un objeto
+        const accion = person.saludar;
+        accion(); //Hola soy -> solo aparece esto porque accion no se esta llamando dentro del contexto del objeto, sino directo
+
+        //this en el contexto de una "clase"
+        //aqui tiene un valor predeterminado
+        function Person(name) {
+            //this = {} asi empieza dentro, no se puede asignar directamente pero si con una propiedad 
+            this.name = name;
+        }
+        //Para asignarles metodos lo hacemos a travez de prototype
+        Person.prototype.saludar = function () {
+            console.log(`Me llamo ${this.name}`); 
+        }
+        const angela = new Person("Angela"); //se refiere a la instancia del objeto, this esta sobre la instancia no sobre el obj prototipal
+        angela.saludar();
+    </script>
+</body>
+</html>
