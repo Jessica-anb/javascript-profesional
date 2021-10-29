@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prototype</title>
+</head>
+<body>
+    <a href="/ejercicios/">Go back</a>
+    <p><em>Abre la consola</em></p>
+
+    <script>
+        // Un objeto común y corriente
+        //es algo inficiente, se crea una funcion por cada objeto y estos son similares
+        /* const zelda = {
+            name: "Zelda",
+        }
+        zelda.saludar = function () {
+            console.log(`Hola soy ${this.name}`);
+        }
+        zelda.saludar();
+
+        // Otro objeto mas
+        const link = {
+            name: "Link",
+        }
+        link.saludar = function () {
+            console.log(`Hola soy ${this.name}`);
+        }
+        link.saludar(); */
+
+
+
+        // Seamos un poco más eficientes 
+        //funcion que hace lo anterior de forma mas eficiente
+        //esta funcion se esta definiendo cada vez que se llama Hero
+        /* function Hero(name) {
+            const hero = {
+                name: name
+            }
+            hero.saludar = function () {
+                console.log(`Hola soy ${this.name}`);
+            };
+            return hero;
+        }
+        const zelda = Hero("Zelda");
+        zelda.saludar();
+        const link = Hero("Link");
+        link.saludar(); */
+
+
+
+        // Aun podemos mejorar más y evitar tener que crear la misma función cada vez
+        //teniendo un objeto que tenga una oleccion de metodos
+        /* const heroMethods = {
+            saludar: function () {
+                console.log(`Me llamo ${this.name}`);
+            },
+        }
+        function Hero(name) {
+            const hero = {
+                name: name
+            }
+            hero.saludar = heroMethods.saludar;
+            return hero;
+        }
+        const zelda = Hero("Zelda");
+        zelda.saludar();
+        const link = Hero("Link");
+        link.saludar(); */
+
+
+
+        // Object.create: recibe un objeto y crea un nuevo objeto, este tendra todas las propiedades que el obj (pasado por argumento) tiene definido
+        //const nuevoObjeto = Object.create(objeto)
+        /* const heroMethods = {
+            saludar: function () {
+                console.log(`Soy superheroe ${this.name}`);
+            },
+        }
+        function Hero(name) {
+            //Todas las propiedades de heroMethods seran parte de este obj
+            const hero = Object.create(heroMethods);
+            hero.name = name;
+            return hero;
+        }
+        const zelda = Hero("Zelda");
+        zelda.saludar();
+        const link = Hero("Link");
+        link.saludar(); */
+        /* en consola:
+
+        - no solo copia propiedades del objeto sino que hace una herencia prototipal
+        const newHero = Object.create(heroMethods);
+        newHero
+            [[Prototype]]: Object
+                saludar: ƒ ()
+        */
+        
+
+
+        // Los métodos de hero dentro de Hero
+        //const heroMethods = {
+        //    saludar: function () {
+        //        console.log(`Soy superheroe ${this.name}`);
+        //    },
+        //}
+        /* function Hero(name) {
+            //Todas las propiedades de heroMethods seran parte de este obj
+            const hero = Object.create(Hero.prototype);
+            hero.name = name;
+            return hero;
+        }
+        //prototype inicialmente es un objeto vacio
+        Hero.prototype.saludar = function () {
+            console.log(`Soy superheroina ${this.name}`);
+        }
+        const zelda = Hero("Zelda");
+        zelda.saludar();
+        const link = Hero("Link");
+        link.saludar(); */
+
+
+
+        // new es un atajo (azucar sintactica) para llevar Hero.prototype al objeto que estamos creando
+        //le añadimos al lenguaje para facilitar algunos procesos
+        function Hero(name) {
+            //se comenta porque cuando usamos new el atajo que hace es que esto ocurra 
+            //automaticamente, la regla es que siempre lo saca del prototype de lo que 
+            //sea el constructor. 
+            //const hero = Object.create(Hero.prototype); 
+            //  -> es como si lo guardara en this = Object.create(Hero.prototype);
+            
+            //hero.name = name;
+            this.name = name;
+            
+            //return hero; -> se hace return this; se comenta porque esto ocurre implicitamente
+        }
+        Hero.prototype.saludar = function () {
+            console.log(`New: ${this.name}`);
+        }
+        //despues de new lo que sucede es de Hero prototype
+        const zelda = new Hero("Zelda");
+        zelda.saludar();
+        const link = new Hero("Link");
+        link.saludar();
+    </script>
+</body>
+</html>
